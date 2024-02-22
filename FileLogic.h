@@ -2,14 +2,16 @@
 #include <fstream>
 #include <vector>
 #include <cmath>
+
 #include "DrawingEngine.h"
+#include "FruchtermanReingold.h"
 
 using namespace std;
 
 #ifndef FileLog
 #define FileLog
 
-void generateGraphImage(const vector<pair<int, int>>& edges, int V, const string& filename) {
+void generateGraphImage(vector<pair<int, int>>& edges, int V, const string& filename) {
     int imageSize = 600; // Размер изображения
     int vertexSize = 10; // Диаметр вершины
     int edgeLength = 10; // Длина ребра
@@ -28,6 +30,35 @@ void generateGraphImage(const vector<pair<int, int>>& edges, int V, const string
         int x = imageSize / 2 + static_cast<int>((imageSize / 3.5 - vertexSize / 2) * cos(angle));
         int y = imageSize / 2 + static_cast<int>((imageSize / 3.5 - vertexSize / 2) * sin(angle));
         vertexCoords[i] = Point(x, y);
+    }
+
+    // Отрисовка вершин
+    for (int i = 0; i < V; ++i) {
+        // Получаем координаты центра вершины
+        int centerX = vertexCoords[i].x;
+        int centerY = vertexCoords[i].y;
+
+        // Отрисовываем круг (вершину)
+        for (int dx = -vertexSize / 2; dx <= vertexSize / 2; ++dx) {
+            for (int dy = -vertexSize / 2; dy <= vertexSize / 2; ++dy) {
+                // Проверяем, находится ли текущий пиксель внутри окружности
+                if (pow(dx, 2) + pow(dy, 2) <= pow(vertexSize / 2, 2)) {
+                    int x = centerX + dx;
+                    int y = centerY + dy;
+                    // Отрисовываем пиксель (кружок) черного цвета
+                    drawPixel(image, imageSize, x, y, 0, 0, 255);
+                }
+            }
+        }
+    }
+
+    // Переопределяем вид ребер
+    vector<vector<int>> adj_list = edgesToAdjacencyList(edges);
+
+    FruchtermanReingold algorithm(adj_list);
+
+    for (int i = 0; i < 50; i++){
+        //algorithm(vertexCoords);
     }
 
     // Отрисовка рёбер

@@ -3,17 +3,12 @@
 #include <vector>
 #include <cmath>
 
+#include "MathEngine.h"
+
 using namespace std;
 
-#ifndef Engine
-#define Engine
-
-// Структура для хранения точки на плоскости
-struct Point {
-    int x, y;
-    Point() : x(0), y(0) {}
-    Point(int _x, int _y) : x(_x), y(_y) {}
-};
+#ifndef Draw_Engine
+#define Draw_Engine
 
 // Функция для отрисовки пикселя на изображении
 void drawPixel(vector<uint8_t>& image, int width, int x, int y, int red, int green, int blue) {

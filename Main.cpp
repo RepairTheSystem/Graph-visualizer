@@ -15,6 +15,7 @@ int main(){
         inputFile >> u >> v;
         edges.emplace_back(u, v);
     }
+    
     generateGraphImage(edges, V, "GRAPH.bmp");
     return 0;
 }

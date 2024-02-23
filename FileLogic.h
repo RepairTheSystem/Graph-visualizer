@@ -12,7 +12,7 @@ using namespace std;
 #define FileLog
 
 void generateGraphImage(vector<pair<int, int>>& edges, int V, const string& filename) {
-    int imageSize = 600; // Размер изображения
+    int imageSize = 1000; // Размер изображения
     int vertexSize = 10; // Диаметр вершины
     int edgeLength = 10; // Длина ребра
 
@@ -31,7 +31,14 @@ void generateGraphImage(vector<pair<int, int>>& edges, int V, const string& file
         int y = imageSize / 2 + static_cast<int>((imageSize / 3.5 - vertexSize / 2) * sin(angle));
         vertexCoords[i] = Point(x, y);
     }
-
+    /*  
+    for (int i = 0; i < V; i++) {
+        vertexCoords[i].x += rand() % 10;
+        vertexCoords[i].y += rand() % 10;
+    }  
+    */
+    
+/* 
     // Отрисовка вершин
     for (int i = 0; i < V; ++i) {
         // Получаем координаты центра вершины
@@ -51,14 +58,13 @@ void generateGraphImage(vector<pair<int, int>>& edges, int V, const string& file
             }
         }
     }
-
+ */
     // Переопределяем вид ребер
     vector<vector<int>> adj_list = edgesToAdjacencyList(edges);
-
     FruchtermanReingold algorithm(adj_list);
 
-    for (int i = 0; i < 50; i++){
-        //algorithm(vertexCoords);
+    for (int i = 0; i < 100; i++){
+        algorithm(vertexCoords);
     }
 
     // Отрисовка рёбер
@@ -77,7 +83,7 @@ void generateGraphImage(vector<pair<int, int>>& edges, int V, const string& file
         for (int dx = -vertexSize / 2; dx <= vertexSize / 2; ++dx) {
             for (int dy = -vertexSize / 2; dy <= vertexSize / 2; ++dy) {
                 // Проверяем, находится ли текущий пиксель внутри окружности
-                if (pow(dx, 2) + pow(dy, 2) <= pow(vertexSize / 2, 2)) {
+                if (pow(dx, 2) + pow(dy, 2) < pow(vertexSize / 2, 2)) {
                     int x = centerX + dx;
                     int y = centerY + dy;
                     // Отрисовываем пиксель (кружок) черного цвета

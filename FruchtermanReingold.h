@@ -33,42 +33,29 @@ void FruchtermanReingold::operator()(vector<Point>& positions) {
 
     // Repulsion force between vertice pairs
     for (int v_id = 0; v_id < adj_list.size(); v_id++) {
-        for (int other_id = v_id + 1; other_id < adj_list.size(); other_id++) {
-            if (v_id == other_id) {
-                continue;
-            }
-
+        for (size_t other_id = v_id + 1; other_id < adj_list.size(); ++other_id) {
             Vector2D delta = positions[v_id] - positions[other_id];
             double distance = delta.norm();
-            // TODO: handle distance == 0.0
-
-            // > 1000.0: not worth computing
-            if (distance > 1000.0) {
-                continue;
+            if (distance != 0.0) {
+                double repulsion = k_ * k_ / distance;
+                mvmts_[v_id] += delta / distance * repulsion;
+                mvmts_[other_id] -= delta / distance * repulsion;
             }
-
-            double repulsion = k_squared_ / distance;
-
-            mvmts_[v_id] += delta / distance * repulsion;
-            mvmts_[other_id] -= delta / distance * repulsion;
         }
+    }
 
-        // Attraction force between edges
-        for (int adj_id : adj_list[v_id]) {
+    // Вычисляем притягивающие силы
+    for (size_t v_id = 0; v_id < adj_list.size(); ++v_id) {
+        for (size_t adj_id : adj_list[v_id]) {
             if (adj_id > v_id) {
-                continue;
+                Vector2D delta = positions[v_id] - positions[adj_id];
+                double distance = delta.norm();
+                if (distance != 0.0) {
+                    double attraction = distance * distance / k_;
+                    mvmts_[v_id] -= delta / distance * attraction;
+                    mvmts_[adj_id] += delta / distance * attraction;
+                }
             }
-
-            Vector2D delta = positions[v_id] - positions[adj_id];
-            double distance = delta.norm();
-            if (distance == 0.0) {
-                continue;
-            }
-
-            double attraction = distance * distance / k_;
-
-            mvmts_[v_id] -= delta / distance * attraction;
-            mvmts_[adj_id] += delta / distance * attraction;
         }
     }
     /* 
@@ -97,10 +84,10 @@ void FruchtermanReingold::operator()(vector<Point>& positions) {
     */
 
     // Cool down fast until we reach 1.5, then stay at low temperature
-    if (temp_ > 1.5) {
-        temp_ *= 0.85;
+    if (temp_ > 1) {
+        temp_ *= 0.97;
     } else {
-        temp_ = 1.5;
+        temp_ = 1;
     }
 }
 

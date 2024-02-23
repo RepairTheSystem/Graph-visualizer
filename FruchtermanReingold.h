@@ -46,7 +46,7 @@ void FruchtermanReingold::operator()(vector<Point>& positions) {
 
     // Вычисляем притягивающие силы
     for (size_t v_id = 0; v_id < adj_list.size(); ++v_id) {
-        for (size_t adj_id : adj_list[v_id]) {
+        for (size_t adj_id : adj_list[v_id]) {    
             if (adj_id > v_id) {
                 Vector2D delta = positions[v_id] - positions[adj_id];
                 double distance = delta.norm();
@@ -56,13 +56,9 @@ void FruchtermanReingold::operator()(vector<Point>& positions) {
                     mvmts_[adj_id] += delta / distance * attraction;
                 }
             }
+        
         }
     }
-    /* 
-    for (int v_id = 0; v_id < adj_list.size(); v_id++) {
-        cout << positions[v_id].x << " " << positions[v_id].y << endl;
-    }
-    */
 
     // Max movement capped by current temperature
     for (int v_id = 0; v_id < adj_list.size(); v_id++) {
@@ -76,12 +72,6 @@ void FruchtermanReingold::operator()(vector<Point>& positions) {
 
         positions[v_id] += capped_mvmt;
     }
-    /* 
-    cout << "-----------------" << endl;
-    for (int v_id = 0; v_id < adj_list.size(); v_id++) {
-        cout << positions[v_id].x << " " << positions[v_id].y << endl;
-    }
-    */
 
     // Cool down fast until we reach 1.5, then stay at low temperature
     if (temp_ > 1) {

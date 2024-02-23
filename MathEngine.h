@@ -10,10 +10,10 @@ struct Point;
 
 // Vector2D in plane
 struct Vector2D {
-    int dx, dy;
+    double dx, dy;
 
     Vector2D() : dx(0), dy(0) {}
-    Vector2D(int _x, int _y) : dx(_x), dy(_y) {};
+    Vector2D(double _x, double _y) : dx(_x), dy(_y) {};
 
     double norm() const {
         return sqrt(dx * dx + dy * dy);
@@ -34,18 +34,18 @@ struct Vector2D {
         dy *= scalar;
         return *this;
     }
-    
+
     Vector2D& operator/=(double scalar) {
         dx /= scalar;
         dy /= scalar;
         return *this;
     }
 };
-// Dot in plane 
+// Dot in plane
 struct Point {
-    int x, y;
+    double x, y;
     Point() : x(0), y(0) {}
-    Point(int _x, int _y) : x(_x), y(_y) {};
+    Point(double _x, double _y) : x(_x), y(_y) {};
     explicit operator Vector2D() const;
     Point& operator+=(const Vector2D& vector) {
         x += vector.dx;
@@ -80,7 +80,7 @@ Vector2D operator-(const Vector2D& lhs, const Vector2D& rhs) {
 }
 
 Vector2D operator*(const Vector2D& vector, double scalar) {
-    return { static_cast<int>(vector.dx * scalar), static_cast<int>(vector.dy * scalar) };
+    return { static_cast<double >(vector.dx * scalar), static_cast<double >(vector.dy * scalar) };
 }
 
 Vector2D operator*(double scalar, const Vector2D& vector) {
@@ -88,7 +88,7 @@ Vector2D operator*(double scalar, const Vector2D& vector) {
 }
 
 Vector2D operator/(const Vector2D& vector, double scalar) {
-    return { static_cast<int>(vector.dx / scalar), static_cast<int>(vector.dy / scalar) };
+    return { static_cast<double >(vector.dx / scalar), static_cast<double>(vector.dy / scalar) };
 }
 
 // Функция для преобразования списка рёбер в список смежности

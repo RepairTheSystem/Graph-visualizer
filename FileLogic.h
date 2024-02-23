@@ -31,42 +31,20 @@ void generateGraphImage(vector<pair<int, int>>& edges, int V, const string& file
         int y = imageSize / 2 + static_cast<int>((imageSize / 3.5 - vertexSize / 2) * sin(angle));
         vertexCoords[i] = Point(x, y);
     }
-    /*  
+      
     for (int i = 0; i < V; i++) {
         vertexCoords[i].x += rand() % 10;
         vertexCoords[i].y += rand() % 10;
     }  
-    */
     
-/* 
-    // Отрисовка вершин
-    for (int i = 0; i < V; ++i) {
-        // Получаем координаты центра вершины
-        int centerX = vertexCoords[i].x;
-        int centerY = vertexCoords[i].y;
-
-        // Отрисовываем круг (вершину)
-        for (int dx = -vertexSize / 2; dx <= vertexSize / 2; ++dx) {
-            for (int dy = -vertexSize / 2; dy <= vertexSize / 2; ++dy) {
-                // Проверяем, находится ли текущий пиксель внутри окружности
-                if (pow(dx, 2) + pow(dy, 2) <= pow(vertexSize / 2, 2)) {
-                    int x = centerX + dx;
-                    int y = centerY + dy;
-                    // Отрисовываем пиксель (кружок) черного цвета
-                    drawPixel(image, imageSize, x, y, 0, 0, 255);
-                }
-            }
-        }
-    }
- */
     // Переопределяем вид ребер
     vector<vector<int>> adj_list = edgesToAdjacencyList(edges);
     FruchtermanReingold algorithm(adj_list);
 
-    for (int i = 0; i < 100; i++){
+    for (int i = 0; i < 10; i++){
         algorithm(vertexCoords);
     }
-
+    // center_and_scale(adj_list, imageSize/4, imageSize/4, vertexCoords);
     // Отрисовка рёбер
     for (const auto& edge : edges) {
         int u = edge.first, v = edge.second;

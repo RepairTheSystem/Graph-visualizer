@@ -12,12 +12,12 @@ public:
     void operator()(vector<Point>& positions);
 
 private:
+    vector<Vector2D> force;
     const vector<vector<int>> adj_list;
+    vector<std::pair<int, int>> edges;
     const double kEasticity;
     const double kSquared;
     double temp;
-    vector<std::pair<int, int>> edges;
-    vector<Vector2D> force;
 };
 
 FruchtermanReingold::FruchtermanReingold(const vector<vector<int>> g, double k)
@@ -28,7 +28,7 @@ void FruchtermanReingold::operator()(vector<Point>& positions) {
     Vector2D zero = { 0, 0 };
     fill(force.begin(), force.end(), zero);
 
-    // Repulsion force between vertice pairs
+    // calculate the repulsion forces
     for (int v_id = 0; v_id < adj_list.size(); v_id++) {
         for (int other_id = v_id + 1; other_id < adj_list.size(); ++other_id) {
             Vector2D delta = positions[v_id] - positions[other_id];
@@ -41,7 +41,7 @@ void FruchtermanReingold::operator()(vector<Point>& positions) {
         }
     }
 
-    // Вычисляем притягивающие силы
+    // Calculate the attractive forces
     for (int v_id = 0; v_id < adj_list.size(); ++v_id) {
         for (int adj_id : adj_list[v_id]) {    
             if (adj_id > v_id) {
@@ -60,7 +60,6 @@ void FruchtermanReingold::operator()(vector<Point>& positions) {
     // Max movement capped by current temperature
     for (int v_id = 0; v_id < adj_list.size(); v_id++) {
         double forceNorm = force[v_id].norm();
-        // < 1.0: not worth computing
         if (forceNorm < 1.0) {
             continue;
         }
@@ -70,7 +69,7 @@ void FruchtermanReingold::operator()(vector<Point>& positions) {
         positions[v_id] += appForce;
     }
 
-    // Cool down fast until we reach 1.5, then stay at low temperature
+    // Cool down 
     if (temp > 1) {
         temp *= 0.97;
     } else {

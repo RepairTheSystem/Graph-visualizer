@@ -12,17 +12,17 @@ using namespace std;
 #define FileLog
 
 void generateGraphImage(vector<pair<int, int>>& edges, int V, const string& filename) {
-    int imageSize = 1000; // Размер изображения
-    int vertexSize = 8; // Диаметр вершины
+    int imageSize = 1000;
+    int vertexSize = 8; // Vertex diameter 
     
-    vector<uint8_t> image(imageSize * imageSize * 3); // RGB изображение
+    vector<uint8_t> image(imageSize * imageSize * 3);
 
-    // Заполнение изображения белым цветом
+    // Filling the image with white color
     for (int i = 0; i < imageSize * imageSize * 3; ++i) {
         image[i] = 255;
     }
 
-    // Определение координат вершин
+    // Determin of the initial coordinates of the vertices on the circle
     vector<Point> vertexCoords(V);
     for (int i = 0; i < V; ++i) {
         double angle = 2 * M_PI * i / V;
@@ -31,7 +31,7 @@ void generateGraphImage(vector<pair<int, int>>& edges, int V, const string& file
         vertexCoords[i] = Point(x, y);
     }
       
-    // Переопределяем вид ребер
+    // Redefining the type of edges
     vector<vector<int>> adjList = edgesToAdjacencyList(edges);
     FruchtermanReingold algorithm(adjList);
 
@@ -39,50 +39,40 @@ void generateGraphImage(vector<pair<int, int>>& edges, int V, const string& file
         algorithm(vertexCoords);
     }
 
-    scaleAndCenterGraph(vertexCoords, 1.4, imageSize, imageSize);
+    scaleAndCenterGraph(vertexCoords, 1.4, imageSize);
 
-    // Отрисовка рёбер
+    // Drawing edges
     for (const auto& edge : edges) {
         int u = edge.first, v = edge.second;
         drawLine(image, imageSize, vertexCoords[u].x, vertexCoords[u].y, vertexCoords[v].x, vertexCoords[v].y, 0, 0, 0);
     }
 
-    // Отрисовка вершин
+    // Drawing vertices
     for (int i = 0; i < V; ++i) {
-        // Получаем координаты центра вершины
         int centerX = vertexCoords[i].x;
         int centerY = vertexCoords[i].y;
 
-        // Отрисовываем круг (вершину)
         for (int dx = -vertexSize / 2; dx <= vertexSize / 2; ++dx) {
             for (int dy = -vertexSize / 2; dy <= vertexSize / 2; ++dy) {
-                // Проверяем, находится ли текущий пиксель внутри окружности
                 if (pow(dx, 2) + pow(dy, 2) < pow(vertexSize / 2, 2)) {
                     int x = centerX + dx;
                     int y = centerY + dy;
-                    // Отрисовываем пиксель (кружок) черного цвета
                     drawPixel(image, imageSize, x, y, 0, 0, 0);
                 }
             }
         }
     }
 
-    // Отрисовка цифр
+    // Drawing numbers
     for (int i = 0; i < V; ++i) {
-        // Получаем координаты центра вершины
         int centerX = vertexCoords[i].x;
         int centerY = vertexCoords[i].y;
 
-        // Отрисовываем круг (вершину)
-        drawDigit(i, image, centerX, centerY-10);
+        drawDigit(i, image, centerX, centerY - 10);
     }
 
-    // Сохранение изображения
+    // Saving image
     ofstream outputFile(filename, ios::binary);
-    if (!outputFile) {
-        cerr << "Ошибка открытия файла для записи." << endl;
-        return;
-    }
     outputFile << "BM";
     int fileSize = 54 + 3 * imageSize * imageSize;
     outputFile.write(reinterpret_cast<char*>(&fileSize), 4);
@@ -114,6 +104,6 @@ void generateGraphImage(vector<pair<int, int>>& edges, int V, const string& file
 
     outputFile.close();
 
-    cout << "Изображение графа успешно сгенерировано: " << filename << endl;
+    cout << "The image has been saved successfully: " << filename << endl;
 }
 #endif

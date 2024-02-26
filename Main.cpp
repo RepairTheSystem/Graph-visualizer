@@ -4,7 +4,7 @@
 using namespace std;
 
 int main(){
-    ifstream inputFile("input.txt"); // file with input data
+    ifstream inputFile("examples/input3.txt"); // file with input data
 
     int V, E;
     inputFile >> V >> E;
@@ -16,6 +16,6 @@ int main(){
         edges.emplace_back(u, v);
     }
     
-    generateGraphImage(edges, V, "GRAPH.bmp");
+    generateGraphImage(edges, V, "GRAPH1.bmp");
     return 0;
 }

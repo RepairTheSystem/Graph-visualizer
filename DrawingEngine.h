@@ -9,7 +9,7 @@ using namespace std;
 #ifndef Draw_Engine
 #define Draw_Engine
 
-// Функция для отрисовки пикселя на изображении
+// Function for rendering a pixel on an image
 void drawPixel(vector<uint8_t>& image, int width, int x, int y, int red, int green, int blue) {
     int index = (y * width + x) * 3;
     if (x >= 0 && x < width && y >= 0 && y < width){
@@ -19,7 +19,7 @@ void drawPixel(vector<uint8_t>& image, int width, int x, int y, int red, int gre
     }
 }
 
-// Функция для отрисовки отрезка по Брезенхему
+// Function for drawing a segment based on Bresenhem 
 void drawLine(vector<uint8_t>& image, int width, int x1, int y1, int x2, int y2, int red, int green, int blue) {
     int dx = abs(x2 - x1);
     int dy = abs(y2 - y1);
@@ -43,7 +43,7 @@ void drawLine(vector<uint8_t>& image, int width, int x1, int y1, int x2, int y2,
     }
 }
 
-// ц и ф р ы
+// Function for drawing a numbers
 void drawDigit(int num, vector<uint8_t> &image, int posX, int posY){
     vector<vector<vector<bool>>> nums = {
         { // 0
@@ -119,6 +119,7 @@ void drawDigit(int num, vector<uint8_t> &image, int posX, int posY){
     };
 
     int offset = 0;
+    // Parsing numbers into digits
     vector<int> digits = {};
     if (num == 0)
         digits.push_back(0);
@@ -127,12 +128,14 @@ void drawDigit(int num, vector<uint8_t> &image, int posX, int posY){
         num /= 10;
     }
     reverse(digits.begin(), digits.end());
+
+    // Rendering
     for (int index = 0; index < digits.size(); index++) {
         int currentNum = digits[index];
         for (int i = 0; i < nums[currentNum].size(); i++) {
             for (int j = 0; j < nums[currentNum][i].size(); j++){
                 if (nums[currentNum][i][j])
-                    drawPixel(image, sqrt(image.size() / 3), posX + j + offset, posY+i, 0, 12, 12);
+                    drawPixel(image, sqrt(image.size() / 3), posX + j + offset, posY+i, 123, 123, 123);
             }
         }
         offset += 5;

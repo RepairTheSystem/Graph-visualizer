@@ -107,4 +107,31 @@ vector<vector<int>> edgesToAdjacencyList(const vector<std::pair<int, int>>& edge
 
     return adjacencyList;
 }
+
+void scaleAndCenterGraph(std::vector<Point>& positions, double scale_factor, size_t image_width, size_t image_height) {
+    // Найти текущие границы графа
+    double min_x = std::numeric_limits<double>::max();
+    double max_x = std::numeric_limits<double>::lowest();
+    double min_y = std::numeric_limits<double>::max();
+    double max_y = std::numeric_limits<double>::lowest();
+
+    for (const Point& pos : positions) {
+        min_x = std::min(min_x, pos.x);
+        max_x = std::max(max_x, pos.x);
+        min_y = std::min(min_y, pos.y);
+        max_y = std::max(max_y, pos.y);
+    }
+
+    // Найти центр масс графа
+    double center_x = (min_x + max_x) / 2.0;
+    double center_y = (min_y + max_y) / 2.0;
+
+    // Масштабировать координаты вершин
+    for (Point& pos : positions) {
+        pos.x = (pos.x - center_x) * scale_factor + center_x + (image_width / 2.0 - center_x) * (1 - scale_factor);
+        pos.y = (pos.y - center_y) * scale_factor + center_y + (image_height / 2.0 - center_y) * (1 - scale_factor);
+    }
+}
+
+
 #endif

@@ -13,9 +13,8 @@ using namespace std;
 
 void generateGraphImage(vector<pair<int, int>>& edges, int V, const string& filename) {
     int imageSize = 1000; // Размер изображения
-    int vertexSize = 10; // Диаметр вершины
-    int edgeLength = 10; // Длина ребра
-
+    int vertexSize = 8; // Диаметр вершины
+    
     vector<uint8_t> image(imageSize * imageSize * 3); // RGB изображение
 
     // Заполнение изображения белым цветом
@@ -32,19 +31,16 @@ void generateGraphImage(vector<pair<int, int>>& edges, int V, const string& file
         vertexCoords[i] = Point(x, y);
     }
       
-    for (int i = 0; i < V; i++) {
-        vertexCoords[i].x += rand() % 10;
-        vertexCoords[i].y += rand() % 10;
-    }  
-    
     // Переопределяем вид ребер
-    vector<vector<int>> adj_list = edgesToAdjacencyList(edges);
-    FruchtermanReingold algorithm(adj_list);
+    vector<vector<int>> adjList = edgesToAdjacencyList(edges);
+    FruchtermanReingold algorithm(adjList);
 
-    for (int i = 0; i < 10; i++){
+    for (int i = 0; i < 100; i++){
         algorithm(vertexCoords);
     }
-    // center_and_scale(adj_list, imageSize/4, imageSize/4, vertexCoords);
+
+    scaleAndCenterGraph(vertexCoords, 1.4, imageSize, imageSize);
+
     // Отрисовка рёбер
     for (const auto& edge : edges) {
         int u = edge.first, v = edge.second;
@@ -69,6 +65,16 @@ void generateGraphImage(vector<pair<int, int>>& edges, int V, const string& file
                 }
             }
         }
+    }
+
+    // Отрисовка цифр
+    for (int i = 0; i < V; ++i) {
+        // Получаем координаты центра вершины
+        int centerX = vertexCoords[i].x;
+        int centerY = vertexCoords[i].y;
+
+        // Отрисовываем круг (вершину)
+        drawDigit(i, image, centerX, centerY-10);
     }
 
     // Сохранение изображения

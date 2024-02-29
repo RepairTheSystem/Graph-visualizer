@@ -11,8 +11,8 @@ using namespace std;
 #ifndef FileLog
 #define FileLog
 
-void generateGraphImage(vector<pair<int, int>>& edges, int V, const string& filename) {
-    int imageSize = 1000;
+void generateGraphImage(vector<std::pair<int, int>>& edges, int V, const string& filename) {
+    int imageSize = 800;
     int vertexSize = 8; // Vertex diameter 
     
     vector<uint8_t> image(imageSize * imageSize * 3);
@@ -31,6 +31,11 @@ void generateGraphImage(vector<pair<int, int>>& edges, int V, const string& file
         vertexCoords[i] = Point(x, y);
     }
       
+    for (int i = 0; i < V; i++) {
+        vertexCoords[i].x += rand() % 50;
+        vertexCoords[i].y += rand() % 50;
+    }
+
     // Redefining the type of edges
     vector<vector<int>> adjList = edgesToAdjacencyList(edges);
     FruchtermanReingold algorithm(adjList);
@@ -39,7 +44,7 @@ void generateGraphImage(vector<pair<int, int>>& edges, int V, const string& file
         algorithm(vertexCoords);
     }
 
-    scaleAndCenterGraph(vertexCoords, 1.4, imageSize);
+    scaleAndCenterGraph(vertexCoords, 1, imageSize);
 
     // Drawing edges
     for (const auto& edge : edges) {

@@ -2,23 +2,26 @@
 #include <cmath>
 
 #include "MathEngine.h"
-using std::vector;
+using std::vector; // [comment] А почему в других местах делали using namespace std, а тут только вектор? Нет единообразия
+// [comment] но я бы порекомендовал везде поступать как тут, чтобы избежать конфликта имен
 
 #ifndef Algos
 #define Algos
 class FruchtermanReingold {
 public:
-    FruchtermanReingold(vector<vector<int>> adj_list, double k = 30.0);
+    FruchtermanReingold(vector<vector<int>> adj_list, double k = 30.0); // [comment] тут имя параметра списка смежности отличается от имени в реализации, некрасиво
     void operator()(vector<Point>& positions);
 
 private:
     vector<Vector2D> force;
     const vector<vector<int>> adj_list;
-    vector<std::pair<int, int>> edges;
+    vector<std::pair<int, int>> edges; // [comment] А это нам зачем?)
     const double kEasticity;
-    const double kSquared;
+    const double kSquared; // [comment] Почему где-то переменные snake_case, а где-то camelCase?
     double temp;
 };
+
+// [comment] Раз уж ты разделил объявление и определение класса и методов, то лучше разделить их по .cpp и .h файлам
 
 FruchtermanReingold::FruchtermanReingold(const vector<vector<int>> g, double k)
     : adj_list(g), kEasticity(k), kSquared(k * k),
@@ -33,7 +36,7 @@ void FruchtermanReingold::operator()(vector<Point>& positions) {
         for (int other_id = v_id + 1; other_id < adj_list.size(); ++other_id) {
             Vector2D delta = positions[v_id] - positions[other_id];
             double distance = delta.norm();
-            if (distance != 0.0) {
+            if (distance != 0.0) { 
                 double repulsion = kEasticity * kEasticity / distance;
                 force[v_id] += delta / distance * repulsion;
                 force[other_id] -= delta / distance * repulsion;
@@ -69,6 +72,7 @@ void FruchtermanReingold::operator()(vector<Point>& positions) {
         positions[v_id] += appForce;
     }
 
+   // [comment] Было бы круто сделать возможность кастомизировать стратегию понижения температуры
     // Cool down 
     if (temp > 1) {
         temp *= 0.97;

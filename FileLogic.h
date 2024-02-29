@@ -4,20 +4,23 @@
 #include <cmath>
 
 #include "DrawingEngine.h"
-#include "FruchtermanReingold.h"
+#include "FruchtermanReingold.h" 
 
 using namespace std;
 
 #ifndef FileLog
 #define FileLog
 
+// [comment] Почему в файле с названием FileLogic функция, отвечающая за отрисовку? Может, ей место в drawing engine или вообще в отдельном файле?
+// [comment] В целом архитектора не очень переиспользуемая, зачем нам при работе с файлом хедер с алгоритмом для графов?
 void generateGraphImage(vector<pair<int, int>>& edges, int V, const string& filename) {
     int imageSize = 1000;
     int vertexSize = 8; // Vertex diameter 
     
     vector<uint8_t> image(imageSize * imageSize * 3);
 
-    // Filling the image with white color
+    // Filling the image with white color 
+    // [comment] Почему не std::fill ?
     for (int i = 0; i < imageSize * imageSize * 3; ++i) {
         image[i] = 255;
     }
@@ -35,11 +38,11 @@ void generateGraphImage(vector<pair<int, int>>& edges, int V, const string& file
     vector<vector<int>> adjList = edgesToAdjacencyList(edges);
     FruchtermanReingold algorithm(adjList);
 
-    for (int i = 0; i < 100; i++){
+    for (int i = 0; i < 100; i++){ // [comment] А если я как пользователь хочу больше итераций?
         algorithm(vertexCoords);
     }
 
-    scaleAndCenterGraph(vertexCoords, 1.4, imageSize);
+    scaleAndCenterGraph(vertexCoords, 1.4, imageSize); // [comment] Снова захардкодил константу :(
 
     // Drawing edges
     for (const auto& edge : edges) {
@@ -71,8 +74,11 @@ void generateGraphImage(vector<pair<int, int>>& edges, int V, const string& file
         drawDigit(i, image, centerX, centerY - 10);
     }
 
+    // [comment] Мне кажется, что эта функция делает уж слишком много действий.
+    // [comment] Лучше разбить на несколько более маленьких, вдруг захочется поменять отдельно систему сохранения файла
+    // [comment] или, например, переиспользовать сохранение (сохранить другую картинку) 
     // Saving image
-    ofstream outputFile(filename, ios::binary);
+    ofstream outputFile(filename, ios::binary); // [comment] Тут бы обработать случай, когда файл открыть не получилось 
     outputFile << "BM";
     int fileSize = 54 + 3 * imageSize * imageSize;
     outputFile.write(reinterpret_cast<char*>(&fileSize), 4);
@@ -104,6 +110,8 @@ void generateGraphImage(vector<pair<int, int>>& edges, int V, const string& file
 
     outputFile.close();
 
-    cout << "The image has been saved successfully: " << filename << endl;
+    // [comment] А если я хочу вывести не в поток cout, а в файл? Лучше тогда или передавать функцию для логирования в качестве параметра,
+    // [comment] или вообще не заниматься логированием в функции, которая предназначена для другого
+    cout << "The image has been saved successfully: " << filename << endl; 
 }
 #endif

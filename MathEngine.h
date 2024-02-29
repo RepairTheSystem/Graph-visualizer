@@ -108,7 +108,9 @@ vector<vector<int>> edgesToAdjacencyList(const vector<pair<int, int>>& edges) {
 }
 
 void scaleAndCenterGraph(vector<Point>& positions, double scaleFactor, int imageSize) {
-    double minX = 999999999;
+    // [comment] Существует библиотека в STL limits, в которой определены константы для максимального значения типов.
+    // [comment] Лучше использовать ее, так как как минимум это более наглядно (как максимум у тебя тут не максимальное значение типа)
+    double minX = 999999999; 
     double maxX = -999999999;
     double minY = 999999999;
     double maxY = -999999999;
@@ -132,4 +134,4 @@ void scaleAndCenterGraph(vector<Point>& positions, double scaleFactor, int image
 }
 
 
-#endif
+#endif // [comment] При использовании include-guard'ов лучше в конце писать, что именно ты закрываешь в комментарии (тут надо было написать MathEngine.h)

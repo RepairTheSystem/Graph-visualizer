@@ -9,6 +9,7 @@ using namespace std;
 #ifndef Draw_Engine
 #define Draw_Engine
 
+// [comment] Функция не защищена от дурачков: если я передам в качестве параметра red число 1337, все будет ОК, но это же не так?
 // Function for rendering a pixel on an image
 void drawPixel(vector<uint8_t>& image, int width, int x, int y, int red, int green, int blue) {
     int index = (y * width + x) * 3;
@@ -43,8 +44,12 @@ void drawLine(vector<uint8_t>& image, int width, int x1, int y1, int x2, int y2,
     }
 }
 
+// [comment] очень-очень большая страшная функция, которую будет страшно и сложно дебагать, если что-то пойдет не так
+// [comment] я бы разбил ее на несколько более маленьких, она даже в два монитора не влезает :)
 // Function for drawing a numbers
 void drawDigit(int num, vector<uint8_t> &image, int posX, int posY){
+    // [comment] это лучше сделать константой, а то каждый раз при вызове функции мы создаем и удаляем объект, который можно 1 раз создать и юзать
+    // [comment] а чтобы к константе не получил доступ кто-нибудь плохой (я могу потом лично объяснить зачем это) лучше все завернуть в класс
     vector<vector<vector<bool>>> nums = {
         { // 0
             {1, 1, 1},
@@ -132,10 +137,12 @@ void drawDigit(int num, vector<uint8_t> &image, int posX, int posY){
     // Rendering
     for (int index = 0; index < digits.size(); index++) {
         int currentNum = digits[index];
+	// [comment] Проблема во всем коде: при работе с векторами ты пользуешься для перебора типом int. Проблема в том, что на 64-битных платформах тип size_t будет иметь размер 
+	// [comment] 64 бита, а на  32-битных платформах -- 32 бита. Из за этого int может переполниться при проходе, и будет очень грустно 
         for (int i = 0; i < nums[currentNum].size(); i++) {
-            for (int j = 0; j < nums[currentNum][i].size(); j++){
+            for (int j = 0; j < nums[currentNum][i].size(); j++){ // [comment] кодстайл :(
                 if (nums[currentNum][i][j])
-                    drawPixel(image, sqrt(image.size() / 3), posX + j + offset, posY+i, 123, 123, 123);
+                    drawPixel(image, sqrt(image.size() / 3), posX + j + offset, posY+i, 123, 123, 123); 
             }
         }
         offset += 5;

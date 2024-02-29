@@ -4,7 +4,7 @@
 #include <cmath>
 #include <algorithm>
 
-using namespace std;
+using std::vector;
 
 #ifndef Draw_Engine
 #define Draw_Engine
@@ -135,7 +135,7 @@ void drawDigit(int num, vector<uint8_t> &image, int posX, int posY){
         for (int i = 0; i < nums[currentNum].size(); i++) {
             for (int j = 0; j < nums[currentNum][i].size(); j++){
                 if (nums[currentNum][i][j])
-                    drawPixel(image, sqrt(image.size() / 3), posX + j + offset, posY+i, 123, 123, 123);
+                    drawPixel(image, sqrt(image.size() / 3), posX + j + offset, posY+i, 255, 0, 0);
             }
         }
         offset += 5;

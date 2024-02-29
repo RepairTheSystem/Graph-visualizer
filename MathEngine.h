@@ -1,7 +1,9 @@
 #include <vector>
 #include <algorithm>
 
-using namespace std;
+using std::vector;
+using std::min;
+using std::max;
 
 #ifndef MathEngine
 #define MathEngine
@@ -92,7 +94,7 @@ Vector2D operator/(const Vector2D& vector, double scalar) {
 }
 
 // Function for converting a list of edges to an adjacency list
-vector<vector<int>> edgesToAdjacencyList(const vector<pair<int, int>>& edges) {
+vector<vector<int>> edgesToAdjacencyList(const vector<std::pair<int, int>>& edges) {
     int maxVertex = -1;
     for (const auto& edge : edges) {
         maxVertex = max(maxVertex, max(edge.first, edge.second));
@@ -124,7 +126,7 @@ void scaleAndCenterGraph(vector<Point>& positions, double scaleFactor, int image
     double centerX = (minX + maxX) / 2.0;
     double centerY = (minY + maxY) / 2.0;
 
-    // Масштабировать координаты вершин
+    // Scale the coordinates of the vertices
     for (Point& pos : positions) {
         pos.x = (pos.x - centerX) * scaleFactor + centerX + (imageSize / 2.0 - centerX) * (1 - scaleFactor);
         pos.y = (pos.y - centerY) * scaleFactor + centerY + (imageSize / 2.0 - centerY) * (1 - scaleFactor);

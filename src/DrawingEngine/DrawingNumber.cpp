@@ -1,47 +1,4 @@
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <cmath>
-#include <algorithm>
-
-using namespace std;
-
-#ifndef Draw_Engine
-#define Draw_Engine
-
-// Function for rendering a pixel on an image
-void drawPixel(vector<uint8_t>& image, int width, int x, int y, int red, int green, int blue) {
-    int index = (y * width + x) * 3;
-    if (x >= 0 && x < width && y >= 0 && y < width){
-        image[index] = blue;
-        image[index + 1] = green;
-        image[index + 2] = red;
-    }
-}
-
-// Function for drawing a segment based on Bresenhem 
-void drawLine(vector<uint8_t>& image, int width, int x1, int y1, int x2, int y2, int red, int green, int blue) {
-    int dx = abs(x2 - x1);
-    int dy = abs(y2 - y1);
-    int sx = x1 < x2 ? 1 : -1;
-    int sy = y1 < y2 ? 1 : -1;
-    int err = dx - dy;
-    int x = x1;
-    int y = y1;
-
-    while (x != x2 || y != y2) {
-        drawPixel(image, width, x, y, red, green, blue);
-        int err2 = 2 * err;
-        if (err2 > -dy) {
-            err -= dy;
-            x += sx;
-        }
-        if (err2 < dx) {
-            err += dx;
-            y += sy;
-        }
-    }
-}
+#include "DrawingFunctions.h"
 
 // Function for drawing a numbers
 void drawDigit(int num, vector<uint8_t> &image, int posX, int posY){
@@ -141,4 +98,3 @@ void drawDigit(int num, vector<uint8_t> &image, int posX, int posY){
         offset += 5;
     }
 }
-#endif

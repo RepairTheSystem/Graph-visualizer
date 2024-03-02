@@ -1,36 +1,17 @@
-#include <vector>
-#include <cmath>
+#include "Alrorithm.h"
 
-#include "MathEngine.h"
-using std::vector;
-
-#ifndef Algos
-#define Algos
-class FruchtermanReingold {
-public:
-    FruchtermanReingold(vector<vector<int>> adj_list, double k = 30.0);
-    void operator()(vector<Point>& positions);
-
-private:
-    vector<Vector2D> force;
-    const vector<vector<int>> adj_list;
-    vector<std::pair<int, int>> edges;
-    const double kEasticity;
-    const double kSquared;
-    double temp;
-};
-
+// Constructor
 FruchtermanReingold::FruchtermanReingold(const vector<vector<int>> g, double k)
-    : adj_list(g), kEasticity(k), kSquared(k * k),
-    temp(10 * sqrt(g.size())), force(adj_list.size()) {}
+    : adjList(g), kEasticity(k), kSquared(k * k),
+    temp(10 * sqrt(g.size())), force(adjList.size()) {}
 
 void FruchtermanReingold::operator()(vector<Point>& positions) {
     Vector2D zero = { 0, 0 };
     fill(force.begin(), force.end(), zero);
 
-    // calculate the repulsion forces
-    for (int v_id = 0; v_id < adj_list.size(); v_id++) {
-        for (int other_id = v_id + 1; other_id < adj_list.size(); ++other_id) {
+    // Сalculate the repulsion forces
+    for (int v_id = 0; v_id < adjList.size(); v_id++) {
+        for (int other_id = v_id + 1; other_id < adjList.size(); ++other_id) {
             Vector2D delta = positions[v_id] - positions[other_id];
             double distance = delta.norm();
             if (distance != 0.0) {
@@ -42,8 +23,8 @@ void FruchtermanReingold::operator()(vector<Point>& positions) {
     }
 
     // Calculate the attractive forces
-    for (int v_id = 0; v_id < adj_list.size(); ++v_id) {
-        for (int adj_id : adj_list[v_id]) {    
+    for (int v_id = 0; v_id < adjList.size(); ++v_id) {
+        for (int adj_id : adjList[v_id]) {    
             if (adj_id > v_id) {
                 Vector2D delta = positions[v_id] - positions[adj_id];
                 double distance = delta.norm();
@@ -58,9 +39,9 @@ void FruchtermanReingold::operator()(vector<Point>& positions) {
     }
 
     // Max movement capped by current temperature
-    for (int v_id = 0; v_id < adj_list.size(); v_id++) {
+    for (int v_id = 0; v_id < adjList.size(); v_id++) {
         double forceNorm = force[v_id].norm();
-        if (forceNorm < 1.0) {
+        if (forceNorm < 2.0) {
             continue;
         }
         double appForceNorm = std::min(forceNorm, temp);
@@ -69,13 +50,10 @@ void FruchtermanReingold::operator()(vector<Point>& positions) {
         positions[v_id] += appForce;
     }
 
-    // Cool down 
+    // Cool down fast until we reach 1.5, then stay at low temperature
     if (temp > 1) {
         temp *= 0.97;
     } else {
         temp = 1;
     }
 }
-
-
-#endif

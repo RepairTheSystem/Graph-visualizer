@@ -1,4 +1,27 @@
+<<<<<<< HEAD:src/Graph_location_algorithm/Alrorithm.cpp
 #include "Alrorithm.h"
+=======
+#include <vector>
+#include <cmath>
+
+#include "MathEngine.h"
+using std::vector;
+
+#ifndef Algos
+#define Algos
+class FruchtermanReingold {
+public:
+    FruchtermanReingold(vector<vector<int>> adjList, double k = 30.0);
+    void operator()(vector<Point>& positions);
+
+private:
+    const vector<vector<int>> adjList;
+    const double kEasticity;
+    const double kSquared;
+    double temp;
+    vector<Vector2D> force;
+};
+>>>>>>> f9d1b60e854651be4c6f446570073e8ed7b61348:FruchtermanReingold.h
 
 // Constructor
 FruchtermanReingold::FruchtermanReingold(const vector<vector<int>> g, double k)

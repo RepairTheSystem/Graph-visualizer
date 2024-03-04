@@ -34,7 +34,7 @@ void fillPixels(ofstream& outputFile, int imageSize, int V, vector<pair<int, int
     }
 
     fillHeader(outputFile, imageSize);
-    outputFile.write(reinterpret_cast<char*>(image.data()), imageSize * imageSize * 3);
+    outputFile.write(reinterpret_cast<char*>(image.data()), 3 * imageSize * imageSize);
     outputFile.close();
 
     cout << "The image has been saved successfully: " << "pomogite...." << endl;

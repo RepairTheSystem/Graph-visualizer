@@ -28,8 +28,16 @@ struct Point {
     Point() : x(0), y(0) {}
     Point(double _x, double _y) : x(_x), y(_y) {};
     explicit operator Vector2D() const;
-    Point& operator+=(const Vector2D& vector);
-    Point& operator-=(const Vector2D& vector);
+    Point& operator+=(const Vector2D& vector) {
+        x += vector.dx;
+        y += vector.dy;
+        return *this;
+    }
+    Point& operator-=(const Vector2D& vector) {
+        x -= vector.dx;
+        y -= vector.dy;
+        return *this;
+    }
 };
 
 Point operator+(const Point& point, const Vector2D& vector);

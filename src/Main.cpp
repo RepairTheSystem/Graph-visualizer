@@ -7,8 +7,8 @@
 using namespace std;
 
 int main(){
-    ifstream inputFile("examples/input3.txt"); // file with input data
-    ofstream outputFile("Graph228", ios::binary);
+    ifstream inputFile("../examples/input3.txt"); // file with input data
+    ofstream outputFile("Graph228.bmp", ios::binary);
     int imageSize = 800;
     int V, E;
     inputFile >> V >> E;
@@ -19,6 +19,7 @@ int main(){
         inputFile >> u >> v;
         edges.emplace_back(u, v);
     }
-    fillPixels(outputFile, imageSize, V, edges);
+
+    fillHeader(outputFile, imageSize);
     return 0;
 }

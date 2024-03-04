@@ -1,5 +1,7 @@
 #include "GraphPosition.h"
 
+#define M_PI 3.14
+
 // Function for converting a list of edges to an adjacency list
 vector<vector<int>> edgesToAdjacencyList(const vector<pair<int, int>>& edges) {
     int maxVertex = -1;

@@ -3,23 +3,21 @@
 #include <vector>
 
 #include "File/FillingFunctions.h"
+#include "Parametr.h"
 
 using namespace std;
 
 int main(){
-    ifstream inputFile("../examples/input3.txt"); // file with input data
-    ofstream outputFile("Graph228.bmp", ios::binary);
-    int imageSize = 800;
-    int V, E;
-    inputFile >> V >> E;
+    int vertexNum, edgesNum;
+    inputFile >> vertexNum >> edgesNum;
 
-    vector<pair<int, int>> edges;
-    for (int i = 0; i < E; i++){
+    vector<std::pair<int, int>> edges;
+    for (int i = 0; i < edgesNum; i++){
         int u, v;
         inputFile >> u >> v;
         edges.emplace_back(u, v);
     }
 
-    fillHeader(outputFile, imageSize);
+    fillPixels(outputFile, imageSize, vertexNum, edges, iteration, scaleFactor);
     return 0;
 }

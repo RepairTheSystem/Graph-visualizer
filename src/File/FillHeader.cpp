@@ -28,12 +28,4 @@ void fillHeader(ofstream& outputFile, int imageSize){
     outputFile.write(reinterpret_cast<char*>(&colors), 4);
     int importantColors = 0;
     outputFile.write(reinterpret_cast<char*>(&importantColors), 4);
-/* 
-    vector<uint8_t> image(imageSize * imageSize * 3);
-
-    fill(image.begin(), image.end(), 255);
-    outputFile.write(reinterpret_cast<char*>(image.data()), 3 * imageSize * imageSize);
-    outputFile.close(); 
-    
-*/
 }

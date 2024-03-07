@@ -1,8 +1,6 @@
 #include "GraphPosition.h"
 
-#define M_PI 3.14
-
-// Function for converting a list of edges to an adjacency list
+// function for converting a list of edges to an adjacency list
 vector<vector<int>> edgesToAdjacencyList(const vector<pair<int, int>>& edges) {
     int maxVertex = -1;
     for (const auto& edge : edges) {
@@ -35,20 +33,20 @@ void scaleAndCenterGraph(vector<Point>& positions, double scaleFactor, int image
     double centerX = (minX + maxX) / 2.0;
     double centerY = (minY + maxY) / 2.0;
 
-    // Масштабировать координаты вершин
+    // scale the coordinates of the vertices
     for (Point& pos : positions) {
         pos.x = (pos.x - centerX) * scaleFactor + centerX + (imageSize / 2.0 - centerX) * (1 - scaleFactor);
         pos.y = (pos.y - centerY) * scaleFactor + centerY + (imageSize / 2.0 - centerY) * (1 - scaleFactor);
     }
 }
-
+// function that places vertices around a circle in the form of a regular polygon
 vector<Point> getStartCoords(int V, int imageSize, int vertexSize){
-    vector<Point> vertexCoords;
+    vector<Point> positions(V);
     for (int i = 0; i < V; ++i) {
-        double angle = 2 * M_PI * i / V;
+        double angle = 2 * 3.14 * i / V;
         int x = imageSize / 2 + static_cast<int>((imageSize / 3.5 - vertexSize / 2) * cos(angle));
         int y = imageSize / 2 + static_cast<int>((imageSize / 3.5 - vertexSize / 2) * sin(angle));
-        vertexCoords[i] = Point(x, y);
+        positions[i] = Point(x, y);
     }
-    return vertexCoords;
+    return positions;
 }

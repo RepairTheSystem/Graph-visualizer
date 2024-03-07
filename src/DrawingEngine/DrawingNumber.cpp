@@ -89,6 +89,7 @@ void drawDigit(int num, vector<uint8_t> &image, int posX, int posY){
     // Rendering
     for (int index = 0; index < digits.size(); index++) {
         int currentNum = digits[index];
+        // Go through the mask of numbers and, if necessary, color the pixel
         for (int i = 0; i < nums[currentNum].size(); i++) {
             for (int j = 0; j < nums[currentNum][i].size(); j++){
                 if (nums[currentNum][i][j])

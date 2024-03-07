@@ -10,8 +10,6 @@ using std::pair;
 
 void scaleAndCenterGraph(vector<Point>& positions, double scaleFactor, int imageSize);
 
-void scaleAndCenterGraph(vector<Point>& positions, double scaleFactor, int imageSize);
-
 vector<Point> getStartCoords(int V, int imageSize, int vertexSize);
 
 // Function for converting a list of edges to an adjacency list

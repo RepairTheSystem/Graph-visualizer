@@ -1,7 +1,7 @@
 #include "FillingFunctions.h"
 
-void fillPixels(ofstream& outputFile, int imageSize, int V, vector<pair<int, int>> edges){
-    //
+void fillPixels(ofstream& outputFile, int imageSize, int V, vector<pair<int, int>> edges, int iterations, int scaleFactor){
+    // An array containing information about pixels
     vector<uint8_t> image(imageSize * imageSize * 3);
 
     fill(image.begin(), image.end(), 255);
@@ -10,14 +10,15 @@ void fillPixels(ofstream& outputFile, int imageSize, int V, vector<pair<int, int
     vector<Point> vertexCoords = getStartCoords(V, imageSize, 8);
 
     vector<vector<int>> adjList = edgesToAdjacencyList(edges);
+    
+    LocAlgorithm algorithm(adjList);
 
-    FruchtermanReingold algorithm(adjList);
-    // строим граф
-    for (int i = 0; i < 100; i++){
+    // Use an algorithm to find the position of the vertices
+    for (int i = 0; i < iterations; i++){
         algorithm(vertexCoords);
     }
 
-    scaleAndCenterGraph(vertexCoords, 1.4, imageSize);
+    scaleAndCenterGraph(vertexCoords, scaleFactor, imageSize);
 
     // Drawing edges
     for (const auto& edge : edges) {
@@ -37,5 +38,5 @@ void fillPixels(ofstream& outputFile, int imageSize, int V, vector<pair<int, int
     outputFile.write(reinterpret_cast<char*>(image.data()), 3 * imageSize * imageSize);
     outputFile.close();
 
-    cout << "The image has been saved successfully: " << "pomogite...." << endl;
+    cout << "The image has been saved successfully" << endl;
 }

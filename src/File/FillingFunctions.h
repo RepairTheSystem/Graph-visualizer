@@ -4,7 +4,7 @@
 #include <cmath>
 
 #include "../Math/GraphPosition.h"
-#include "../Graph_location_algorithm/Alrorithm.h"
+#include "../GraphLocationAlgorithm/Alrorithm.h"
 #include "../DrawingEngine/DrawingFunctions.h"
 
 using std::string;

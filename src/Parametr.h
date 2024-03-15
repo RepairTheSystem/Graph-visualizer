@@ -4,7 +4,7 @@
 #ifndef Variable
 #define Variable
 
-int imageSize = 3000; // Resolution
+int imageSize = 400; // Resolution
 std::ifstream inputFile("../examples/input5.txt"); // Path to input data
 std::ofstream outputFile("Graph228.bmp", std::ios::binary); // Name of output file
 int vertexSize = 8; // Diametr of vertex

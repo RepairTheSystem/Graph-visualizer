@@ -15,6 +15,7 @@ int main(){
     for (int i = 0; i < edgesNum; i++){
         int u, v;
         inputFile >> u >> v;
+        u--; v--;
         edges.emplace_back(u, v);
     }
 

@@ -1,5 +1,6 @@
 #include "FillingFunctions.h"
 
+// all the changeable parameters are in the configs
 void fillHeader(ofstream& outputFile, int imageSize){
     outputFile << "BM";
     int fileSize = 54 + 3 * imageSize * imageSize;

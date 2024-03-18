@@ -4,7 +4,7 @@
 #include "DrawingFunctions.h"
 
 // Function for drawing a line segment using Bresenham's algorithm
-void drawLine(vector<uint8_t>& image, int width, int x1, int y1, int x2, int y2, int red, int green, int blue) {
+void drawLine(vector<uint8_t>& image, int width, const int x1, const int y1, const int x2, const int y2, int red, int green, int blue) {
     // Calculate differences between coordinates
     int dx = abs(x2 - x1);
     int dy = abs(y2 - y1);

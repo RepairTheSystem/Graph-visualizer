@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "File/FillingFunctions.h"
-#include "Parametr.h"
+#include "Config.h"
 
 using namespace std;
 
